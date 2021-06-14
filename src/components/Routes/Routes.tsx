@@ -16,10 +16,10 @@ const Routes: React.FC = () => {
     <Router>
       <Switch>
         <Route path="/login">
-          <h1>Login Page</h1>
+          <h1>Login Page Test</h1>
         </Route>
         <Route path="/register">
-          <h1>Register Page</h1>
+          <h1>Register Page Test</h1>
         </Route>
         <ProtectedRoutes />
       </Switch>
