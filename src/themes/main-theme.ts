@@ -8,7 +8,7 @@ const palette = {
   },
   primary: {
     // light: "#6e8ba9",
-    main: "#222a35",
+    main: "#161b22",
     // main: "#5881ab",
     // dark: "#4c6886",
     // accent: "#3454DB",
@@ -20,7 +20,7 @@ const palette = {
   },
   secondary: {
     lighter: "#3c4850",
-    light: "#6b6e70",
+    light: "#090c10",
     main: "#08d1ff",
     dark: "#222223",
     contrastText: "#fff"

@@ -9,24 +9,61 @@ import {
 /**
  * Hooks
  */
-import useLocalStorage from "./index";
+import useLocalStorage, { useApiClient } from "./index";
 
+/**
+ * Defines the auth interface
+ */
 interface Auth {
   isLoggedIn?: boolean;
 }
+
+/**
+ * Defines the user interface
+ */
+interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  createdAt: string;
+  avatar: string;
+  score: number;
+}
+
+/**
+ * Defines the default values interface
+ */
 interface ProviderValue {
   token: string;
+  user: User;
   auth: Auth;
+  updateUser: (user: User) => void;
   updateAuth: (auth: Auth) => void;
+  logout: () => void;
   setToken: (value: string | ((val: string) => string)) => void;
 }
 
+/**
+ * Init the default values
+ */
 const defaultValue: ProviderValue = {
   token: "",
+  user: {
+    id: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    createdAt: "",
+    avatar: "",
+    score: 0
+  },
   auth: {
     isLoggedIn: false
   },
+  updateUser: (user: User) => {},
   updateAuth: (auth: Auth) => {},
+  logout: () => {},
   setToken: (value: string | ((val: string) => string)) => {}
 };
 
@@ -49,22 +86,51 @@ type AuthProviderType = (props: { children?: ReactNode }) => any;
 const AuthProvider: AuthProviderType = (props) => {
   const { children } = props;
 
+  /**
+   * Init the useApiClient hook
+   */
+  const { apiClient } = useApiClient({ withCredentials: true });
+
   const [token, setToken] = useLocalStorage<string>("token");
   const [auth, setAuth] = useState<Auth>(defaultValue.auth);
 
+  const [user, setUser] = useState<User>(defaultValue.user);
+
+  const fetchUser = async () => {
+    const { data } = await apiClient.get("/api/auth");
+
+    setUser(data);
+  };
+
   const updateAuth = (auth: Auth) => {
     setAuth(auth);
+  };
+
+  const logout = () => {
+    setAuth((prevState) => ({ ...prevState, isLoggedIn: false }));
+  };
+
+  const updateUser = (user: User) => {
+    setUser(user);
   };
 
   useEffect(() => {
     updateAuth({ isLoggedIn: !!token });
   }, [token]);
 
+  useEffect(() => {
+    fetchUser();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <authContext.Provider
       value={{
         token,
         auth,
+        user,
+        updateUser,
+        logout,
         setToken,
         updateAuth
       }}
