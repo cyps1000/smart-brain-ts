@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import axios from "axios";
 
 /**
@@ -7,26 +6,13 @@ import axios from "axios";
 interface Config {
   withCredentials?: boolean;
   logout?: () => void;
-  dispatchMessage: (props: {
-    message: ReactNode;
-    severity?: "success" | "warning" | "error" | undefined;
-    permanent?: boolean | undefined;
-    autoClose?: number | undefined;
-  }) => void;
-}
-
-interface ApiError {
-  errors: {
-    message: string;
-    errorType?: string;
-  }[];
 }
 
 /**
  * Defines the api client function
  */
 export const getApiClient = (config: Config) => {
-  const { withCredentials, dispatchMessage } = config;
+  const { withCredentials } = config;
 
   /**
    * Handles getting the base api url
@@ -51,34 +37,10 @@ export const getApiClient = (config: Config) => {
       request.headers["x-auth-token"] = token;
     }
 
+    request.headers["Content-Type"] = "application/json";
+
     return request;
   });
-
-  apiClient.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    async (error) => {
-      if (error.response) {
-        const data: ApiError = error.response.data;
-        if (data.errors.length > 0) {
-          dispatchMessage({
-            message: (
-              <ul>
-                {data.errors.map((error, index) => (
-                  <li key={`${error.errorType}_${index}`}> {error.message} </li>
-                ))}
-              </ul>
-            ),
-            severity: "error",
-            autoClose: 15000
-          });
-        }
-      }
-
-      return Promise.reject(error);
-    }
-  );
 
   return { apiClient };
 };
