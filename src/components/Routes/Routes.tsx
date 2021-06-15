@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ProtectedRoutes from "../ProtectedRoutes";
 import Navbar from "../Navbar";
 import Body from "../Body";
+import Register from "../Register";
 
 /**
  * Displays the component
@@ -23,7 +24,7 @@ const Routes: React.FC = () => {
             <h2>Login Page</h2>
           </Route>
           <Route path="/register">
-            <h2>Register Page</h2>
+            <Register />
           </Route>
           <ProtectedRoutes />
         </Switch>
