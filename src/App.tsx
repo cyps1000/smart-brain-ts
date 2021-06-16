@@ -10,6 +10,7 @@ import CssBaseLine from "@material-ui/core/CssBaseline";
  */
 import Providers from "./components/Providers";
 import Routes from "./components/Routes";
+import Body from "./components/Body";
 
 /**
  * Imports component specific css
@@ -24,7 +25,9 @@ const App: React.FC = () => {
     <Fragment>
       <CssBaseLine />
       <Providers>
-        <Routes />
+        <Body>
+          <Routes />
+        </Body>
       </Providers>
     </Fragment>
   );

@@ -1,25 +1,24 @@
+import { useState, ChangeEvent } from "react";
 import { Link, Redirect } from "react-router-dom";
 
 /**
  * Imports Material UI Components
  */
 import Button from "@material-ui/core/Button";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 /**
- * Components Imports
- */
-import InputLabel from "../InputLabel";
-import InputPassword from "../InputPassword";
-import InputText from "../InputText";
-
-/**
  * Imports Hooks
  */
-import { useForm, FormConfig, useAuth, useApiClient } from "../../hooks";
+import { useAuth, useApiClient, useMessage } from "../../hooks";
+
+/**
+ * Imports utils
+ */
+import { isEmail } from "../../utils/validateEmail";
 
 /**
  * Imports the component styles
@@ -57,47 +56,81 @@ const Register: React.FC = () => {
   const { apiClient } = useApiClient({});
 
   /**
-   * Handles the Register form
+   * Init the useMessage hook
    */
-  const handleRegister = async (inputs: FormInputs) => {
+  const { dispatchMessage } = useMessage();
+
+  /**
+   * Init the text area state
+   */
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    passwordConfirm: ""
+  });
+
+  const { firstName, lastName, email, password, passwordConfirm } = formData;
+
+  /**
+   * Handles registering an user
+   */
+  const register = async (inputs: FormInputs) => {
+    /**
+     * Handles checking if the passwords match
+     */
     if (password !== passwordConfirm)
-      return console.log("Passwords dont match");
+      return dispatchMessage({
+        message: "Passwords do not match",
+        severity: "error",
+        autoClose: 3000
+      });
 
-    const res = await apiClient.post("/api/auth/register", inputs);
+    /**
+     * Handles checking if the password is between 8 and 20 chars
+     */
+    if (password.length < 8 || password.length > 20)
+      return dispatchMessage({
+        message: "Password must be between 8 and 20 characters",
+        severity: "error",
+        autoClose: 3000
+      });
 
-    setToken(res.data.token);
+    /**
+     * Handles checking if the email is valid
+     */
+    if (!isEmail(email))
+      return dispatchMessage({
+        message: "Email must be valid",
+        severity: "error",
+        autoClose: 3000
+      });
+
+    try {
+      const res = await apiClient.post("/api/auth/register", inputs);
+      setToken(res.data.token);
+    } catch (error) {
+      const errors = error.response.data.errors;
+
+      dispatchMessage({
+        message: errors.map((err: { msg: string }) => err.msg),
+        severity: "error",
+        autoClose: 3000
+      });
+    }
   };
 
   /**
-   * Defines the useForm config
+   * Handles submitting the form
    */
-  const formConfig: FormConfig<FormInputs> = {
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      passwordConfirm: ""
-    },
-    submitFn: handleRegister,
-    autoFocus: true
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    register(formData);
   };
 
-  /**
-   * Initializes the useForm hook
-   */
-  const { inputs, inputsReady, getAutoFocus, submit, handleInputChange } =
-    useForm(formConfig);
-
-  /**
-   * Gets the autoFocus object
-   */
-  const autoFocus = inputsReady && getAutoFocus();
-
-  /**
-   * Gets the input state
-   */
-  const { firstName, lastName, email, password, passwordConfirm } = inputs;
+  const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   /**
    * Handles checking if the user is logged in
@@ -107,24 +140,101 @@ const Register: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="md" className={classes.container}>
+    <Container maxWidth="xs" className={classes.container}>
       <Grid container className={classes.container}>
         <Grid item lg={12} className={classes.title}>
           <Typography variant="h4" color="secondary" gutterBottom>
             Sign Up
           </Typography>
         </Grid>
-        <form className={classes.form} noValidate onSubmit={submit}>
-          <Grid item lg={12}>
-            <InputLabel text="First Name" htmlFor="firstName" />
-            <InputText
-              required
-              value={firstName}
-              name="firstName"
-              autoFocus={autoFocus}
-              onChange={handleInputChange}
-              debounce={inputsReady}
-            />
+        <form className={classes.form} onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <TextField
+                autoComplete="First Name"
+                label="First Name"
+                name="firstName"
+                value={firstName}
+                onChange={(e) => onChange(e)}
+                variant="outlined"
+                color="secondary"
+                required
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                autoComplete="Last Name"
+                label="Last Name"
+                name="lastName"
+                value={lastName}
+                onChange={(e) => onChange(e)}
+                variant="outlined"
+                color="secondary"
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                value={email}
+                onChange={(e) => onChange(e)}
+                fullWidth
+                type="email"
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                color="secondary"
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                value={password}
+                onChange={(e) => onChange(e)}
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                color="secondary"
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                value={passwordConfirm}
+                onChange={(e) => onChange(e)}
+                fullWidth
+                name="passwordConfirm"
+                label="Confirm Password"
+                type="password"
+                id="passwordConfirm"
+                autoComplete="confirm-password"
+                color="secondary"
+                required
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            value="Register"
+          >
+            Sign Up
+          </Button>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Link to="/login" className={classes.linkLogin}>
+                Already have an account? Sign in
+              </Link>
+            </Grid>
           </Grid>
         </form>
       </Grid>

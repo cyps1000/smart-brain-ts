@@ -7,8 +7,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
  *  Imports components
  */
 import ProtectedRoutes from "../ProtectedRoutes";
+import MessagePopup from "../MessagePopup";
 import Navbar from "../Navbar";
-import Body from "../Body";
 import Register from "../Register";
 
 /**
@@ -17,18 +17,17 @@ import Register from "../Register";
 const Routes: React.FC = () => {
   return (
     <Router>
+      <MessagePopup />
       <Navbar />
-      <Body>
-        <Switch>
-          <Route path="/login">
-            <h2>Login Page</h2>
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <ProtectedRoutes />
-        </Switch>
-      </Body>
+      <Switch>
+        <Route path="/login">
+          <h2>Login Page</h2>
+        </Route>
+        <Route path="/register">
+          <Register />
+        </Route>
+        <ProtectedRoutes />
+      </Switch>
     </Router>
   );
 };
