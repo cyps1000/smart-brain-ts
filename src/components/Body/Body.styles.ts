@@ -10,7 +10,7 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: theme.palette.secondary.light,
-    marginTop: "-19px",
+    marginTop: 0,
     height: "100%"
   }
 }));
