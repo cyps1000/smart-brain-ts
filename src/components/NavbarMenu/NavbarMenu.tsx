@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory, Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 /**
  * Imports Material UI components
@@ -94,10 +94,9 @@ const NavbarMenu: React.FC<NavbarMenuProps> = (props) => {
    * Handles logging out the user
    */
   const handleLogout = () => {
-    localStorage.removeItem("token");
     logout();
     handleClose();
-    return <Redirect to="/login" />;
+    routeTo("/login");
   };
 
   /**

@@ -108,6 +108,7 @@ const AuthProvider: AuthProviderType = (props) => {
 
   const logout = () => {
     setAuth((prevState) => ({ ...prevState, isLoggedIn: false }));
+    localStorage.removeItem("token");
   };
 
   const updateUser = (user: User) => {
@@ -119,9 +120,11 @@ const AuthProvider: AuthProviderType = (props) => {
   }, [token]);
 
   useEffect(() => {
-    fetchUser();
+    if (auth.isLoggedIn) {
+      fetchUser();
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [auth.isLoggedIn]);
 
   return (
     <authContext.Provider

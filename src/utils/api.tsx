@@ -31,10 +31,12 @@ export const getApiClient = (config: Config) => {
     baseURL: getApiUrl()
   });
 
-  apiClient.interceptors.request.use((request) => {
+  apiClient.interceptors.request.use(async (request) => {
     if (withCredentials) {
-      const token = JSON.parse(localStorage.getItem("token") || "");
-      request.headers["x-auth-token"] = token;
+      try {
+        const token = JSON.parse(localStorage.getItem("token") || "");
+        request.headers["x-auth-token"] = token;
+      } catch (error) {}
     }
 
     request.headers["Content-Type"] = "application/json";

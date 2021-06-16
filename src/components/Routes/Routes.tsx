@@ -10,6 +10,7 @@ import ProtectedRoutes from "../ProtectedRoutes";
 import MessagePopup from "../MessagePopup";
 import Navbar from "../Navbar";
 import Register from "../Register";
+import Login from "../Login";
 
 /**
  * Displays the component
@@ -21,7 +22,7 @@ const Routes: React.FC = () => {
       <Navbar />
       <Switch>
         <Route path="/login">
-          <h2>Login Page</h2>
+          <Login />
         </Route>
         <Route path="/register">
           <Register />
