@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/cyps1000/smart-brain-ts/tree/main.svg?style=shield)](https://circleci.com/gh/cyps1000/smart-brain-ts/?branch=main)
+
 ## Available Scripts
 
 In the project directory, you can run:
