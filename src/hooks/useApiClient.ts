@@ -1,7 +1,7 @@
 /**
  * Imports Hooks
  */
-import { useAuth, useMessage } from "./index";
+import { useAuth } from "./index";
 import { useHistory } from "react-router-dom";
 
 /**
@@ -31,11 +31,6 @@ const useApiClient = (props: ApiClientHookProps) => {
 
   const { updateAuth } = useAuth();
 
-  /**
-   * Gets the message dispatcher
-   */
-  const { dispatchMessage } = useMessage();
-
   const history = useHistory();
 
   const logout = () => {
@@ -46,8 +41,7 @@ const useApiClient = (props: ApiClientHookProps) => {
 
   const { apiClient } = getApiClient({
     withCredentials,
-    logout,
-    dispatchMessage
+    logout
   });
 
   return { apiClient };

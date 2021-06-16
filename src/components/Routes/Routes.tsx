@@ -7,6 +7,10 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
  *  Imports components
  */
 import ProtectedRoutes from "../ProtectedRoutes";
+import MessagePopup from "../MessagePopup";
+import Navbar from "../Navbar";
+import Register from "../Register";
+import Login from "../Login";
 
 /**
  * Displays the component
@@ -14,12 +18,14 @@ import ProtectedRoutes from "../ProtectedRoutes";
 const Routes: React.FC = () => {
   return (
     <Router>
+      <MessagePopup />
+      <Navbar />
       <Switch>
         <Route path="/login">
-          <h1>Login Page Test</h1>
+          <Login />
         </Route>
         <Route path="/register">
-          <h1>Register Page Test</h1>
+          <Register />
         </Route>
         <ProtectedRoutes />
       </Switch>

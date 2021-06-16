@@ -8,7 +8,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 /**
  * Imports hooks
  */
-import { useAuth, useApiClient } from "../../hooks";
+import { useAuth } from "../../hooks";
 
 /**
  * Displays the component
@@ -22,35 +22,7 @@ const ProtectedRoutes: React.FC = () => {
   /**
    * Gets the auth
    */
-  const { token, updateAuth } = useAuth();
-
-  /**
-   * Gets the api client
-   */
-  const { apiClient } = useApiClient({ withCredentials: true });
-
-  /**
-   * Handles checking if the user is logged in
-   */
-  const checkIfLoggedIn = async () => {
-    const { data } = await apiClient.get("/api/auth");
-
-    if (!data) {
-      setUnauthorized(true);
-      updateAuth({ isLoggedIn: false });
-      return;
-    }
-
-    updateAuth({ isLoggedIn: true });
-  };
-
-  /**
-   * Handles checking if the user is logged in
-   */
-  useEffect(() => {
-    checkIfLoggedIn();
-    // eslint-disable-next-line
-  }, [token]);
+  const { token } = useAuth();
 
   /**
    * Handles updating the unauthorized state
