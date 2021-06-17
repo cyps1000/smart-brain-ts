@@ -23,7 +23,7 @@ import { isEmail } from "../../utils/validateEmail";
 /**
  * Imports the component styles
  */
-import { useStyles } from "./Login.styles";
+import { useStyles, inputStyles } from "./Login.styles";
 
 /**
  * Defines the form inputs interface
@@ -41,6 +41,11 @@ const Login: React.FC = () => {
    * Gets the component styles
    */
   const classes = useStyles();
+
+  /**
+   * Gets the input component styles
+   */
+  const inputClasses = inputStyles();
 
   /**
    * Inits the auth hook
@@ -84,14 +89,22 @@ const Login: React.FC = () => {
     try {
       const res = await apiClient.post("/api/auth/login", inputs);
       setToken(res.data.token);
-    } catch (error) {
-      const errors = error.response.data.errors;
 
       dispatchMessage({
-        message: errors.map((err: { msg: string }) => err.msg),
-        severity: "error",
+        message: "Successfully logged in",
+        severity: "success",
         autoClose: 3000
       });
+    } catch (error) {
+      if (error.response) {
+        const { errors } = error.response.data;
+
+        dispatchMessage({
+          message: errors.map((err: { msg: string }) => err.msg),
+          severity: "error",
+          autoClose: 3000
+        });
+      }
     }
   };
 
@@ -103,6 +116,9 @@ const Login: React.FC = () => {
     login(formData);
   };
 
+  /**
+   * Handles the event source when the value is changed
+   */
   const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -135,7 +151,7 @@ const Login: React.FC = () => {
                 name="email"
                 color="secondary"
                 required
-                className={classes.input}
+                InputProps={{ classes: inputClasses }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -150,6 +166,7 @@ const Login: React.FC = () => {
                 id="password"
                 color="secondary"
                 required
+                InputProps={{ classes: inputClasses }}
               />
             </Grid>
           </Grid>

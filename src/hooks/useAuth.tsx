@@ -9,7 +9,7 @@ import {
 /**
  * Hooks
  */
-import useLocalStorage, { useApiClient } from "./index";
+import useLocalStorage from "./index";
 
 /**
  * Defines the auth interface
@@ -87,44 +87,50 @@ const AuthProvider: AuthProviderType = (props) => {
   const { children } = props;
 
   /**
-   * Init the useApiClient hook
+   * Handles the token
    */
-  const { apiClient } = useApiClient({ withCredentials: true });
-
   const [token, setToken] = useLocalStorage<string>("token");
+
+  /**
+   * Handles the auth state
+   */
   const [auth, setAuth] = useState<Auth>(defaultValue.auth);
 
+  /**
+   * Handles the user state
+   */
   const [user, setUser] = useState<User>(defaultValue.user);
 
-  const fetchUser = async () => {
-    const { data } = await apiClient.get("/api/auth");
-
-    setUser(data);
-  };
-
+  /**
+   * Handles updating the auth state
+   */
   const updateAuth = (auth: Auth) => {
     setAuth(auth);
   };
 
-  const logout = () => {
-    setAuth((prevState) => ({ ...prevState, isLoggedIn: false }));
-    localStorage.removeItem("token");
-  };
-
+  /**
+   * Handles updating the user state
+   */
   const updateUser = (user: User) => {
     setUser(user);
   };
 
-  useEffect(() => {
-    updateAuth({ isLoggedIn: !!token });
-  }, [token]);
+  /**
+   * Handles logging out the user
+   */
+  const logout = () => {
+    updateAuth({ isLoggedIn: false });
+    localStorage.removeItem("token");
+  };
 
+  /**
+   * Handles updating the auth state, based on the token
+   */
   useEffect(() => {
-    if (auth.isLoggedIn) {
-      fetchUser();
-    }
-    // eslint-disable-next-line
-  }, [auth.isLoggedIn]);
+    updateAuth({
+      isLoggedIn: !!token
+    });
+  }, [token]);
 
   return (
     <authContext.Provider
