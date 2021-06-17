@@ -4,6 +4,25 @@
  */
 import { makeStyles, Theme, fade } from "@material-ui/core/styles";
 
+const inputStyles = makeStyles((theme: Theme) => ({
+  input: {
+    "&:-webkit-autofill": {
+      boxShadow: `0 0 0 50px ${theme.palette.primary.main} inset`,
+      borderRadius: 0,
+      backgroundColor: "red",
+      "-webkit-box-shadow": `0 0 0 50px ${theme.palette.primary.main} inset`,
+      "-webkit-text-fill-color": theme.palette.secondary.main
+    },
+    "&:-webkit-autofill:focus": {
+      boxShadow: `0 0 0 50px ${theme.palette.primary.main} inset`,
+      borderRadius: 0,
+      backgroundColor: "red",
+      "-webkit-box-shadow": `0 0 0 50px ${theme.palette.primary.main} inset`,
+      "-webkit-text-fill-color": theme.palette.secondary.main
+    }
+  }
+}));
+
 /**
  * Styles the component
  */
@@ -37,22 +56,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     }
   },
-  input: {
-    "&:-webkit-autofill": {
-      boxShadow: `0 0 0 50px ${theme.palette.primary.main} inset`,
-      borderRadius: 0,
-      backgroundColor: "red",
-      "-webkit-box-shadow": `0 0 0 50px ${theme.palette.primary.main} inset`,
-      "-webkit-text-fill-color": theme.palette.secondary.main
-    },
-    "&:-webkit-autofill:focus": {
-      boxShadow: `0 0 0 50px ${theme.palette.primary.main} inset`,
-      borderRadius: 0,
-      backgroundColor: "red",
-      "-webkit-box-shadow": `0 0 0 50px ${theme.palette.primary.main} inset`,
-      "-webkit-text-fill-color": theme.palette.secondary.main
-    }
-  },
   title: {
     display: "flex",
     justifyContent: "center"
@@ -74,4 +77,4 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export { useStyles };
+export { useStyles, inputStyles };

@@ -12,7 +12,7 @@ interface Config {
  * Defines the api client function
  */
 export const getApiClient = (config: Config) => {
-  const { withCredentials } = config;
+  const { withCredentials, logout } = config;
 
   /**
    * Handles getting the base api url
@@ -31,6 +31,9 @@ export const getApiClient = (config: Config) => {
     baseURL: getApiUrl()
   });
 
+  /**
+   * Handles intercepting the requests made to the backend
+   */
   apiClient.interceptors.request.use(async (request) => {
     if (withCredentials) {
       try {
@@ -43,6 +46,23 @@ export const getApiClient = (config: Config) => {
 
     return request;
   });
+
+  /**
+   * Handles intercepting the responses from the backend
+   */
+  apiClient.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      if (error.response) {
+        const data = error.response.data;
+        if (data.msg === "Token is not valid") {
+          localStorage.removeItem("token");
+          logout && logout();
+        }
+        return Promise.reject(error);
+      }
+    }
+  );
 
   return { apiClient };
 };

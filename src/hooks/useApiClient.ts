@@ -29,10 +29,19 @@ const defaultProps: ApiClientHookProps = {
 const useApiClient = (props: ApiClientHookProps) => {
   const { withCredentials } = props;
 
+  /**
+   * Handles updating the auth state
+   */
   const { updateAuth } = useAuth();
 
+  /**
+   * Init the history hook
+   */
   const history = useHistory();
 
+  /**
+   * Handles logging out the user
+   */
   const logout = () => {
     updateAuth({ isLoggedIn: false });
     localStorage.removeItem("token");

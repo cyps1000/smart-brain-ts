@@ -23,7 +23,7 @@ import { isEmail } from "../../utils/validateEmail";
 /**
  * Imports the component styles
  */
-import { useStyles } from "./Register.styles";
+import { useStyles, inputStyles } from "./Register.styles";
 
 /**
  * Defines the form inputs interface
@@ -46,6 +46,11 @@ const Register: React.FC = () => {
   const classes = useStyles();
 
   /**
+   * Gets the input component styles
+   */
+  const inputClasses = inputStyles();
+
+  /**
    * Inits the auth hook
    */
   const { auth, setToken } = useAuth();
@@ -53,7 +58,7 @@ const Register: React.FC = () => {
   /**
    * Inits the API
    */
-  const { apiClient } = useApiClient({});
+  const { apiClient } = useApiClient({ withCredentials: false });
 
   /**
    * Init the useMessage hook
@@ -110,6 +115,12 @@ const Register: React.FC = () => {
     try {
       const res = await apiClient.post("/api/auth/register", inputs);
       setToken(res.data.token);
+
+      dispatchMessage({
+        message: "Successfully registered",
+        severity: "success",
+        autoClose: 3000
+      });
     } catch (error) {
       const errors = error.response.data.errors;
 
@@ -129,6 +140,9 @@ const Register: React.FC = () => {
     register(formData);
   };
 
+  /**
+   * Handles the event source when the value is changed
+   */
   const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -159,7 +173,7 @@ const Register: React.FC = () => {
                 variant="outlined"
                 color="secondary"
                 required
-                InputProps={{ classes }}
+                InputProps={{ classes: inputClasses }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -172,7 +186,7 @@ const Register: React.FC = () => {
                 variant="outlined"
                 color="secondary"
                 required
-                InputProps={{ classes }}
+                InputProps={{ classes: inputClasses }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -188,7 +202,7 @@ const Register: React.FC = () => {
                 autoComplete="email"
                 color="secondary"
                 required
-                InputProps={{ classes }}
+                InputProps={{ classes: inputClasses }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -204,7 +218,7 @@ const Register: React.FC = () => {
                 autoComplete="current-password"
                 color="secondary"
                 required
-                InputProps={{ classes }}
+                InputProps={{ classes: inputClasses }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -220,7 +234,7 @@ const Register: React.FC = () => {
                 autoComplete="confirm-password"
                 color="secondary"
                 required
-                InputProps={{ classes }}
+                InputProps={{ classes: inputClasses }}
               />
             </Grid>
           </Grid>
