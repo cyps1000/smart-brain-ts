@@ -41,12 +41,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     "&:-webkit-autofill": {
       boxShadow: `0 0 0 50px ${theme.palette.primary.main} inset`,
       borderRadius: 0,
+      backgroundColor: "red",
       "-webkit-box-shadow": `0 0 0 50px ${theme.palette.primary.main} inset`,
       "-webkit-text-fill-color": theme.palette.secondary.main
     },
     "&:-webkit-autofill:focus": {
       boxShadow: `0 0 0 50px ${theme.palette.primary.main} inset`,
       borderRadius: 0,
+      backgroundColor: "red",
       "-webkit-box-shadow": `0 0 0 50px ${theme.palette.primary.main} inset`,
       "-webkit-text-fill-color": theme.palette.secondary.main
     }

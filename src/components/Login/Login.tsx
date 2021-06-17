@@ -135,7 +135,7 @@ const Login: React.FC = () => {
                 name="email"
                 color="secondary"
                 required
-                className={classes.input}
+                InputProps={{ classes }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -150,6 +150,7 @@ const Login: React.FC = () => {
                 id="password"
                 color="secondary"
                 required
+                InputProps={{ classes }}
               />
             </Grid>
           </Grid>

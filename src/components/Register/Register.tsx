@@ -159,6 +159,7 @@ const Register: React.FC = () => {
                 variant="outlined"
                 color="secondary"
                 required
+                InputProps={{ classes }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -171,6 +172,7 @@ const Register: React.FC = () => {
                 variant="outlined"
                 color="secondary"
                 required
+                InputProps={{ classes }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -186,6 +188,7 @@ const Register: React.FC = () => {
                 autoComplete="email"
                 color="secondary"
                 required
+                InputProps={{ classes }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -201,6 +204,7 @@ const Register: React.FC = () => {
                 autoComplete="current-password"
                 color="secondary"
                 required
+                InputProps={{ classes }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -216,6 +220,7 @@ const Register: React.FC = () => {
                 autoComplete="confirm-password"
                 color="secondary"
                 required
+                InputProps={{ classes }}
               />
             </Grid>
           </Grid>
