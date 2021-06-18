@@ -8,6 +8,7 @@ import { Route, Switch, useHistory } from "react-router-dom";
 /**
  * Imports components
  */
+import Main from "../Main";
 import Profile from "../Profile";
 
 /**
@@ -78,7 +79,7 @@ const ProtectedRoutes: React.FC = () => {
     <Route path="/">
       <Switch>
         <Route exact path="/">
-          <h1> App overview </h1>
+          <Main />
         </Route>
         <Route exact path="/profile">
           <Profile />

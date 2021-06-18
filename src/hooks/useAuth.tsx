@@ -21,14 +21,14 @@ interface Auth {
 /**
  * Defines the user interface
  */
-interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  createdAt: string;
-  avatar: string;
-  score: number;
+export interface User {
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  createdAt?: string;
+  avatar?: string;
+  score?: number;
 }
 
 /**
