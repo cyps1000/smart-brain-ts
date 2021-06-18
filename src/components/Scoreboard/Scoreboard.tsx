@@ -63,15 +63,17 @@ const Scoreboard: React.FC = () => {
   const getUsers = async () => {
     try {
       const { data } = await apiClient.get("/api/profiles");
+      setLoading(true);
 
-      if (!data) {
+      if (data) {
         setLoading(false);
+        setUsers(data);
       }
-      setUsers(data);
     } catch (error) {
-      setLoading(false);
       if (error.response) {
         const { msg } = error.response.data;
+
+        setLoading(false);
 
         if (msg === "Token is not valid") {
           dispatchMessage({

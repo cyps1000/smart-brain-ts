@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
  */
 import MainTitle from "../MainTitle";
 import Scoreboard from "../Scoreboard";
+import Footer from "../Footer";
 
 /**
  * Imports the component styles
@@ -31,6 +32,11 @@ const Main: React.FC = () => {
   const appTitle =
     "This Magic Brain will detect faces in your pictures. Give it a try!";
 
+  /**
+   * Defines the Footer's title
+   */
+  const footerText = "© Smart-Brain";
+
   return (
     <Grid container>
       <Grid item xs={12} lg={12}>
@@ -43,7 +49,7 @@ const Main: React.FC = () => {
         <Typography color="secondary">App</Typography>
       </Grid>
       <Grid item lg={12}>
-        <Typography color="secondary">Footer</Typography>
+        <Footer text={footerText} />
       </Grid>
     </Grid>
   );
