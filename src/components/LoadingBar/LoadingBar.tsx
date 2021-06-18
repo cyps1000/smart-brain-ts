@@ -20,7 +20,7 @@ const LoadingBar: React.FC = () => {
 
   return (
     <Box className={classes.root}>
-      <LinearProgress color="secondary" />
+      <LinearProgress className={classes.progressBar} />
     </Box>
   );
 };

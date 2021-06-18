@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     "& > * + *": {
       marginTop: theme.spacing(2)
     }
+  },
+  progressBar: {
+    backgroundColor: "#ee82ee"
   }
 }));
 
