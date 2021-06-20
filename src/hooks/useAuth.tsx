@@ -37,8 +37,10 @@ export interface User {
 interface ProviderValue {
   token: string;
   user: User;
+  users: User[];
   auth: Auth;
   updateUser: (user: User) => void;
+  updateUsers: (users: User[]) => void;
   updateAuth: (auth: Auth) => void;
   logout: () => void;
   setToken: (value: string | ((val: string) => string)) => void;
@@ -58,10 +60,12 @@ const defaultValue: ProviderValue = {
     avatar: "",
     score: 0
   },
+  users: [],
   auth: {
     isLoggedIn: false
   },
   updateUser: (user: User) => {},
+  updateUsers: (users: User[]) => {},
   updateAuth: (auth: Auth) => {},
   logout: () => {},
   setToken: (value: string | ((val: string) => string)) => {}
@@ -102,6 +106,11 @@ const AuthProvider: AuthProviderType = (props) => {
   const [user, setUser] = useState<User>(defaultValue.user);
 
   /**
+   * Handles the users state
+   */
+  const [users, setUsers] = useState<User[]>(defaultValue.users);
+
+  /**
    * Handles updating the auth state
    */
   const updateAuth = (auth: Auth) => {
@@ -113,6 +122,13 @@ const AuthProvider: AuthProviderType = (props) => {
    */
   const updateUser = (user: User) => {
     setUser(user);
+  };
+
+  /**
+   * Handles updating the user state
+   */
+  const updateUsers = (users: User[]) => {
+    setUsers(users);
   };
 
   /**
@@ -132,12 +148,18 @@ const AuthProvider: AuthProviderType = (props) => {
     });
   }, [token]);
 
+  useEffect(() => {
+    updateUser(user);
+  }, []);
+
   return (
     <authContext.Provider
       value={{
         token,
         auth,
         user,
+        users,
+        updateUsers,
         updateUser,
         logout,
         setToken,

@@ -16,12 +16,7 @@ import UserScore from "../UserScore";
 /**
  * Imports Hooks
  */
-import { useApiClient, useMessage } from "../../hooks";
-
-/**
- * Imports User interface
- */
-import { User } from "../../hooks";
+import { useApiClient, useMessage, useAuth } from "../../hooks";
 
 /**
  * Imports the component styles
@@ -38,14 +33,14 @@ const Scoreboard: React.FC = () => {
   const classes = useStyles();
 
   /**
-   * Init the users state
-   */
-  const [users, setUsers] = useState<User[]>();
-
-  /**
    * Init the laoding state
    */
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  /**
+   * Init the auth hook
+   */
+  const { users, updateUsers } = useAuth();
 
   /**
    * Init the api hook
@@ -61,44 +56,19 @@ const Scoreboard: React.FC = () => {
    * Handles fetching the users
    */
   const getUsers = async () => {
-    try {
-      const { data } = await apiClient.get("/api/profiles");
-      setLoading(true);
+    const { data } = await apiClient.get("/api/profiles");
 
-      if (data) {
-        setLoading(false);
-        setUsers(data);
-      }
-    } catch (error) {
-      if (error.response) {
-        const { msg } = error.response.data;
-
-        setLoading(false);
-
-        if (msg === "Token is not valid") {
-          dispatchMessage({
-            message: "Session expired",
-            severity: "error",
-            autoClose: 3000
-          });
-        }
-      }
+    if (data) {
+      setLoading(false);
+      updateUsers(data);
     }
   };
-
-  /**
-   * Handles the loading state
-   */
-  useEffect(() => {
-    if (users && users.length > 0) {
-      setLoading(false);
-    }
-  }, [users]);
 
   /**
    * Handles getting the users
    */
   useEffect(() => {
+    setLoading(true);
     getUsers();
     // eslint-disable-next-line
   }, []);

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * External Imports
@@ -20,6 +20,8 @@ import { useAuth, useApiClient } from "../../hooks";
  * Displays the component
  */
 const ProtectedRoutes: React.FC = () => {
+  const [verifiedUser, setVerifiedUser] = useState(false);
+
   /**
    * Init the useApiClient hook
    */
@@ -39,17 +41,21 @@ const ProtectedRoutes: React.FC = () => {
    * Handles fetching the user data if exists
    */
   const fetchUser = async () => {
-    const { data } = await apiClient.get("/api/auth");
+    try {
+      const { data } = await apiClient.get("/api/auth");
+      setVerifiedUser(true);
 
-    if (!data) {
-      updateAuth({ isLoggedIn: false });
-      localStorage.removeItem("token");
-      history.push("/login");
-      return;
-    }
+      if (!data) {
+        updateAuth({ isLoggedIn: false });
+        localStorage.removeItem("token");
+        history.push("/login");
 
-    updateAuth({ isLoggedIn: true });
-    updateUser(data);
+        return;
+      }
+
+      updateAuth({ isLoggedIn: true });
+      updateUser(data);
+    } catch (error) {}
   };
 
   /**
@@ -68,12 +74,11 @@ const ProtectedRoutes: React.FC = () => {
     // eslint-disable-next-line
   }, [token]);
 
-  /**
-   * Handles redirecting if the user is not logged in
-   */
-  if (!auth.isLoggedIn) {
-    history.push("/login");
-  }
+  useEffect(() => {
+    if (verifiedUser && !auth.isLoggedIn) {
+      history.push("/login");
+    }
+  }, [verifiedUser]);
 
   return (
     <Route path="/">

@@ -24,12 +24,7 @@ import { useStyles } from "./Profile.styles";
 /**
  * Imports Hooks
  */
-import { useApiClient, useMessage } from "../../hooks";
-
-/**
- * Imports User interface
- */
-import { User } from "../../hooks";
+import { useApiClient, useMessage, useAuth } from "../../hooks";
 
 /**
  * Displays the component
@@ -41,11 +36,6 @@ const Profile: React.FC = () => {
   const classes = useStyles();
 
   /**
-   * Init the user state
-   */
-  const [user, setUser] = useState<User>();
-
-  /**
    * Init the laoding state
    */
   const [loading, setLoading] = useState(true);
@@ -54,6 +44,11 @@ const Profile: React.FC = () => {
    * Handles the tabs' state
    */
   const [value, setValue] = useState(1);
+
+  /**
+   * Init the auth state
+   */
+  const { user, updateUser } = useAuth();
 
   /**
    * Init the useApiClient hook
@@ -69,29 +64,13 @@ const Profile: React.FC = () => {
    * Handles fetching the user's profile
    */
   const getProfile = async () => {
-    try {
-      const { data } = await apiClient.get("/api/profile/me");
+    const { data } = await apiClient.get("/api/profile/me");
 
-      setLoading(true);
+    setLoading(true);
 
-      if (data) {
-        setLoading(false);
-        setUser(data);
-      }
-    } catch (error) {
-      if (error.response) {
-        const { msg } = error.response.data;
-
-        setLoading(false);
-
-        if (msg === "Token is not valid") {
-          dispatchMessage({
-            message: "Session expired",
-            severity: "error",
-            autoClose: 3000
-          });
-        }
-      }
+    if (data) {
+      setLoading(false);
+      updateUser(data);
     }
   };
 
@@ -143,7 +122,7 @@ const Profile: React.FC = () => {
             Edit Profile
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {user && <ViewProfile user={user} />}
+            {Object.keys(user).length > 0 && <ViewProfile user={user} />}
           </TabPanel>
           <TabPanel value={value} index={2}>
             <DeleteAccount />

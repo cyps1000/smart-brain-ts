@@ -27,7 +27,7 @@ import { useApiClient, useMessage } from "../../hooks";
 /**
  * Imports the User interface
  */
-import { User } from "../../hooks";
+import { User, useAuth } from "../../hooks";
 
 /**
  * Defines the props interface
@@ -48,9 +48,9 @@ const ViewProfile: React.FC<ViewProfileProps> = (props) => {
   const classes = useStyles();
 
   /**
-   * Handles the Score state
+   * Init the auth hook
    */
-  const [score, setScore] = useState(user.score);
+  const { updateUser, user: authUser } = useAuth();
 
   /**
    * Init the api client
@@ -70,7 +70,7 @@ const ViewProfile: React.FC<ViewProfileProps> = (props) => {
       try {
         const { data } = await apiClient.put("/api/profile/score");
 
-        setScore(data.score);
+        updateUser({ ...authUser, score: data.score });
 
         dispatchMessage({
           message: data.msg,
@@ -113,7 +113,7 @@ const ViewProfile: React.FC<ViewProfileProps> = (props) => {
         </Typography>
       </Grid>
       <Grid justify="center" container item lg={12} className={classes.score}>
-        <Typography variant="h5">Score: {score}</Typography>
+        <Typography variant="h5">Score: {user.score}</Typography>
       </Grid>
       <Grid justify="center" container item lg={12}>
         <Button
