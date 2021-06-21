@@ -30,7 +30,7 @@ const Main: React.FC = () => {
    * Defines the App's title
    */
   const appTitle =
-    "This Magic Brain will detect faces in your pictures. Give it a try!";
+    "This Smart Brain will detect faces in your pictures. Give it a try!";
 
   /**
    * Defines the Footer's title

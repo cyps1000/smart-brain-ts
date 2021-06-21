@@ -102,6 +102,7 @@ const ViewProfile: React.FC<ViewProfileProps> = (props) => {
         <Button
           variant="outlined"
           onClick={resetScore}
+          disabled={!user.score}
           className={classes.button}
         >
           Reset Score

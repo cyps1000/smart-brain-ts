@@ -14,6 +14,7 @@ import Tab from "@material-ui/core/Tab";
 import TabPanel from "../TabPanel";
 import LoadingBar from "../LoadingBar";
 import ViewProfile from "../ViewProfile";
+import EditProfile from "../EditProfile";
 import DeleteAccount from "../DeleteAccount";
 
 /**
@@ -109,7 +110,7 @@ const Profile: React.FC = () => {
       ) : (
         <Fragment>
           <TabPanel value={value} index={0}>
-            Edit Profile
+            <EditProfile user={user} />
           </TabPanel>
           <TabPanel value={value} index={1}>
             {Object.keys(user).length > 0 && <ViewProfile user={user} />}
