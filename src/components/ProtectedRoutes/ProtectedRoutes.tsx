@@ -1,61 +1,72 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * External Imports
  */
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 /**
  * Imports components
  */
+import Main from "../Main";
 import Profile from "../Profile";
 
 /**
  * Imports hooks
  */
-import { useAuth, useApiClient } from "../../hooks";
+import { useAuth, useUser, useApiClient } from "../../hooks";
 
 /**
  * Displays the component
  */
 const ProtectedRoutes: React.FC = () => {
   /**
+   * Inits the unauthorized state
+   */
+  const [unauthorized, setUnauthorized] = useState(false);
+
+  /**
    * Init the useApiClient hook
    */
   const { apiClient } = useApiClient({ withCredentials: true });
 
   /**
-   * Init the history hook
-   */
-  const history = useHistory();
-
-  /**
    * Gets the auth state
    */
-  const { token, updateAuth, updateUser, auth } = useAuth();
+  const { token, updateAuth } = useAuth();
+
+  /**
+   * Gets the user state
+   */
+  const { updateUser } = useUser();
 
   /**
    * Handles fetching the user data if exists
    */
-  const fetchUser = async () => {
-    const { data } = await apiClient.get("/api/auth");
+  const checkIfLoggedIn = async () => {
+    const response = await apiClient.get("/api/auth");
 
-    if (!data) {
-      updateAuth({ isLoggedIn: false });
-      localStorage.removeItem("token");
-      history.push("/login");
-      return;
+    if (response) {
+      const { data } = response;
+
+      if (!data) {
+        setUnauthorized(true);
+        updateAuth({ isLoggedIn: false });
+        localStorage.removeItem("token");
+        return;
+      }
+
+      updateUser(data);
     }
 
     updateAuth({ isLoggedIn: true });
-    updateUser(data);
   };
 
   /**
    * Handles checking if the user is logged in
    */
   useEffect(() => {
-    fetchUser();
+    checkIfLoggedIn();
     // eslint-disable-next-line
   }, [token]);
 
@@ -63,22 +74,19 @@ const ProtectedRoutes: React.FC = () => {
    * Handles updating the unauthorized state
    */
   useEffect(() => {
-    if (!token) updateAuth({ isLoggedIn: false });
-    // eslint-disable-next-line
+    if (!token) setUnauthorized(true);
   }, [token]);
 
   /**
-   * Handles redirecting if the user is not logged in
+   * Handles redirecting the user if unauthorized
    */
-  if (!auth.isLoggedIn) {
-    history.push("/login");
-  }
+  if (unauthorized) return <Redirect to="/login" />;
 
   return (
     <Route path="/">
       <Switch>
         <Route exact path="/">
-          <h1> App overview </h1>
+          <Main />
         </Route>
         <Route exact path="/profile">
           <Profile />

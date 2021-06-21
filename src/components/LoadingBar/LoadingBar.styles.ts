@@ -8,13 +8,14 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
  * Styles the component
  */
 const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    display: "flex",
-    backgroundColor: theme.palette.primary.dark,
-    justifyContent: "center"
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2)
+    }
   },
-  tabs: {
-    color: theme.palette.common.white
+  progressBar: {
+    backgroundColor: "#ee82ee"
   }
 }));
 
