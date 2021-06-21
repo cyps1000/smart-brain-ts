@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 /**
  * External Imports
  */
@@ -22,12 +20,12 @@ import { useStyles } from "./ViewProfile.styles";
 /**
  * Imports Hooks
  */
-import { useApiClient, useMessage } from "../../hooks";
+import { useApiClient, useMessage, useUser } from "../../hooks";
 
 /**
  * Imports the User interface
  */
-import { User, useAuth } from "../../hooks";
+import { User } from "../../hooks/useUser/Context";
 
 /**
  * Defines the props interface
@@ -50,7 +48,7 @@ const ViewProfile: React.FC<ViewProfileProps> = (props) => {
   /**
    * Init the auth hook
    */
-  const { updateUser, user: authUser } = useAuth();
+  const { updateUser, user: authUser } = useUser();
 
   /**
    * Init the api client
@@ -67,29 +65,14 @@ const ViewProfile: React.FC<ViewProfileProps> = (props) => {
    */
   const resetScore = async () => {
     if (window.confirm("Are you sure? This cannot be undone.")) {
-      try {
-        const { data } = await apiClient.put("/api/profile/score");
+      const { data } = await apiClient.put("/api/profile/score");
 
-        updateUser({ ...authUser, score: data.score });
-
-        dispatchMessage({
-          message: data.msg,
-          severity: "success",
-          autoClose: 3000
-        });
-      } catch (error) {
-        if (error.response) {
-          const { msg } = error.response.data;
-
-          if (msg === "Token is not valid") {
-            dispatchMessage({
-              message: "Session expired",
-              severity: "error",
-              autoClose: 3000
-            });
-          }
-        }
-      }
+      updateUser({ ...authUser, score: data.score });
+      dispatchMessage({
+        message: data.msg,
+        severity: "success",
+        autoClose: 3000
+      });
     }
   };
 

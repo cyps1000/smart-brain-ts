@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // Hook
-function useLocalStorage<T = undefined>(key: string, initialValue?: T) {
+export function useLocalStorage<T = undefined>(key: string, initialValue?: T) {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState<T>(() => {
@@ -13,7 +13,6 @@ function useLocalStorage<T = undefined>(key: string, initialValue?: T) {
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       // If error also return initialValue
-      console.log(error);
       return initialValue;
     }
   });
@@ -29,11 +28,8 @@ function useLocalStorage<T = undefined>(key: string, initialValue?: T) {
       // Save to local storage
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
     } catch (error) {
-      // A more advanced implementation would handle the error case
-      console.log(error);
+      return;
     }
   };
   return [storedValue, setValue] as const;
 }
-
-export default useLocalStorage;

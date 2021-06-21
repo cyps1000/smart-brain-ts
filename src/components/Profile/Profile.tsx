@@ -24,7 +24,7 @@ import { useStyles } from "./Profile.styles";
 /**
  * Imports Hooks
  */
-import { useApiClient, useMessage, useAuth } from "../../hooks";
+import { useApiClient, useUser } from "../../hooks";
 
 /**
  * Displays the component
@@ -36,19 +36,14 @@ const Profile: React.FC = () => {
   const classes = useStyles();
 
   /**
-   * Init the laoding state
-   */
-  const [loading, setLoading] = useState(true);
-
-  /**
    * Handles the tabs' state
    */
   const [value, setValue] = useState(1);
 
   /**
-   * Init the auth state
+   * Init the user state
    */
-  const { user, updateUser } = useAuth();
+  const { user, loading, updateUser, updateLoading } = useUser();
 
   /**
    * Init the useApiClient hook
@@ -56,20 +51,15 @@ const Profile: React.FC = () => {
   const { apiClient } = useApiClient({ withCredentials: true });
 
   /**
-   * Init the useMessage hook
-   */
-  const { dispatchMessage } = useMessage();
-
-  /**
    * Handles fetching the user's profile
    */
   const getProfile = async () => {
     const { data } = await apiClient.get("/api/profile/me");
 
-    setLoading(true);
+    updateLoading(true);
 
     if (data) {
-      setLoading(false);
+      updateLoading(false);
       updateUser(data);
     }
   };

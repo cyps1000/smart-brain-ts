@@ -15,7 +15,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 /**
  * Imports hooks
  */
-import { useAuth } from "../../hooks";
+import { useAuth, useUser } from "../../hooks";
 
 /**
  * Imports the component styles
@@ -42,9 +42,14 @@ const NavbarMenu: React.FC<NavbarMenuProps> = (props) => {
   const classes = useStyles();
 
   /**
-   * Handles getting the user and auth state
+   * Handles getting the auth state
    */
-  const { user, auth, logout } = useAuth();
+  const { auth, logout } = useAuth();
+
+  /**
+   * Handles getting the user state
+   */
+  const { user } = useUser();
 
   /**
    * Gets the history object

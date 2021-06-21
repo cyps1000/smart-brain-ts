@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 /**
  * Imports Material UI Components
@@ -16,7 +16,7 @@ import UserScore from "../UserScore";
 /**
  * Imports Hooks
  */
-import { useApiClient, useMessage, useAuth } from "../../hooks";
+import { useApiClient, useUser } from "../../hooks";
 
 /**
  * Imports the component styles
@@ -33,24 +33,14 @@ const Scoreboard: React.FC = () => {
   const classes = useStyles();
 
   /**
-   * Init the laoding state
+   * Init the user state
    */
-  const [loading, setLoading] = useState(false);
-
-  /**
-   * Init the auth hook
-   */
-  const { users, updateUsers } = useAuth();
+  const { users, loading, updateUsers, updateLoading } = useUser();
 
   /**
    * Init the api hook
    */
   const { apiClient } = useApiClient({ withCredentials: true });
-
-  /**
-   * Init the useMessage hook
-   */
-  const { dispatchMessage } = useMessage();
 
   /**
    * Handles fetching the users
@@ -59,7 +49,7 @@ const Scoreboard: React.FC = () => {
     const { data } = await apiClient.get("/api/profiles");
 
     if (data) {
-      setLoading(false);
+      updateLoading(false);
       updateUsers(data);
     }
   };
@@ -68,7 +58,7 @@ const Scoreboard: React.FC = () => {
    * Handles getting the users
    */
   useEffect(() => {
-    setLoading(true);
+    updateLoading(true);
     getUsers();
     // eslint-disable-next-line
   }, []);

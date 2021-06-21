@@ -6,7 +6,7 @@ import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 /**
  * Imports components
  */
-import { AuthProvider, MessageProvider } from "../../hooks";
+import { AuthProvider, MessageProvider, UserProvider } from "../../hooks";
 
 /**
  * Imports themes
@@ -27,7 +27,9 @@ const Providers: React.FC = (props) => {
   return (
     <ThemeProvider theme={getTheme()}>
       <AuthProvider>
-        <MessageProvider>{children}</MessageProvider>
+        <UserProvider>
+          <MessageProvider>{children}</MessageProvider>
+        </UserProvider>
       </AuthProvider>
     </ThemeProvider>
   );

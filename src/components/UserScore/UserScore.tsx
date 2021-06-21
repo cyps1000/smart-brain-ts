@@ -13,7 +13,7 @@ import { useStyles } from "./UserScore.styles";
 /**
  * Imports User interface
  */
-import { User } from "../../hooks";
+import { User } from "../../hooks/useUser/Context";
 
 /**
  * Defines the props interface
