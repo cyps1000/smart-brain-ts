@@ -27,10 +27,14 @@ const inputStyles = makeStyles((theme: Theme) => ({
  * Styles the component
  */
 const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    backgroundColor: theme.palette.primary.main,
-    padding: "1rem",
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: "1rem",
+    padding: "0 2rem",
+    color: theme.palette.secondary.main,
     "& label": {
       color: theme.palette.secondary.main
     },
@@ -55,31 +59,15 @@ const useStyles = makeStyles((theme: Theme) => ({
       }
     }
   },
-  title: {
-    color: theme.palette.secondary.main,
-    paddingBottom: "1rem"
-  },
-  userNameInput: {
-    paddingTop: "2rem"
-  },
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  submit: {
+  button: {
     margin: theme.spacing(3, 0, 2),
     color: theme.palette.common.black,
+    padding: "0.4rem 2rem",
     backgroundColor: theme.palette.secondary.main,
     "&:hover": {
-      color: theme.palette.secondary.main
+      color: theme.palette.secondary.main,
+      backgroundColor: theme.palette.primary.main
     }
-  },
-  avatar: {
-    height: "7rem",
-    width: "7rem",
-    marginBottom: "2rem"
   }
 }));
 

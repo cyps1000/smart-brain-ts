@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import axios from "axios";
 
 /**
@@ -6,13 +7,19 @@ import axios from "axios";
 interface Config {
   withCredentials?: boolean;
   logout?: () => void;
+  dispatchMessage: (props: {
+    message: ReactNode;
+    severity?: "success" | "warning" | "error" | undefined;
+    permanent?: boolean | undefined;
+    autoClose?: number | undefined;
+  }) => void;
 }
 
 /**
  * Defines the api client function
  */
 export const getApiClient = (config: Config) => {
-  const { withCredentials, logout } = config;
+  const { withCredentials, logout, dispatchMessage } = config;
 
   /**
    * Handles getting the base api url
@@ -55,10 +62,26 @@ export const getApiClient = (config: Config) => {
     async (error) => {
       if (error.response) {
         const data = error.response.data;
+
         if (data.msg === "Token is not valid") {
           localStorage.removeItem("token");
+          dispatchMessage({
+            message: "Session expired",
+            severity: "error",
+            autoClose: 5000
+          });
           logout && logout();
         }
+
+        if (data.msg === "Authorization denied.") {
+          dispatchMessage({
+            message: "Session expired",
+            severity: "error",
+            autoClose: 5000
+          });
+          logout && logout();
+        }
+
         return Promise.reject(error);
       }
     }

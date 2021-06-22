@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   avatar: {
-    height: "1.8rem",
-    width: "1.8rem",
+    height: "2.1rem",
+    width: "2.1rem",
     marginRight: "0.5rem"
   },
   user: {
