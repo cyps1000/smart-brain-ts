@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 /**
@@ -6,6 +7,11 @@ import { useHistory } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+
+/**
+ * Imports components
+ */
+import AlertModal from "../AlertModal";
 
 /**
  * Imports the component styles
@@ -25,6 +31,11 @@ const DeleteAccount: React.FC = () => {
    * Gets the component styles
    */
   const classes = useStyles();
+
+  /**
+   * Handles the modal state
+   */
+  const [open, setOpen] = useState(false);
 
   /**
    * Gets the history object
@@ -47,31 +58,40 @@ const DeleteAccount: React.FC = () => {
   const { dispatchMessage } = useMessage();
 
   /**
+   * Handles closing the modal
+   */
+  const handleClose = () => setOpen(false);
+
+  /**
+   * Handles opening the modal
+   */
+  const handleOpen = () => setOpen(true);
+
+  /**
    * Handles deleteing the account
    */
   const deleteAccount = async () => {
-    if (window.confirm("Are you sure? This cannot be undone.")) {
-      try {
-        await apiClient.delete("/api/users");
+    try {
+      await apiClient.delete("/api/users");
 
-        logout();
-        history.push("/login");
-        dispatchMessage({
-          message: "Your account has been permanently removed",
-          severity: "success",
-          autoClose: 3000
-        });
-      } catch (error) {
-        if (error.response) {
-          const { msg } = error.response.data;
+      logout();
+      history.push("/login");
+      handleClose();
+      dispatchMessage({
+        message: "Your account has been permanently removed",
+        severity: "success",
+        autoClose: 3000
+      });
+    } catch (error) {
+      if (error.response) {
+        const { msg } = error.response.data;
 
-          if (msg === "Token is not valid") {
-            dispatchMessage({
-              message: "Session expired",
-              severity: "error",
-              autoClose: 3000
-            });
-          }
+        if (msg === "Token is not valid") {
+          dispatchMessage({
+            message: "Session expired",
+            severity: "error",
+            autoClose: 3000
+          });
         }
       }
     }
@@ -82,12 +102,19 @@ const DeleteAccount: React.FC = () => {
       <Grid justify="center" container item lg={12}>
         <Button
           variant="outlined"
-          onClick={deleteAccount}
+          onClick={handleOpen}
           className={classes.button}
         >
           Delete Account
         </Button>
       </Grid>
+      <AlertModal
+        agree={deleteAccount}
+        open={open}
+        onClose={handleClose}
+        title="Delete account"
+        content="Are you sure? This cannot be undone"
+      />
     </Paper>
   );
 };

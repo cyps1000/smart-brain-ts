@@ -7,11 +7,11 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 
-import LoadingBar from "../LoadingBar";
 /**
  * Imports Components
  */
 import UserScore from "../UserScore";
+import LoadingBar from "../LoadingBar";
 
 /**
  * Imports Hooks
@@ -48,6 +48,8 @@ const Scoreboard: React.FC = () => {
   const getUsers = async () => {
     const { data } = await apiClient.get("/api/profiles");
 
+    updateLoading(true);
+
     if (data) {
       updateLoading(false);
       updateUsers(data);
@@ -58,7 +60,6 @@ const Scoreboard: React.FC = () => {
    * Handles getting the users
    */
   useEffect(() => {
-    updateLoading(true);
     getUsers();
     // eslint-disable-next-line
   }, [user.score]);

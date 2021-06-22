@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: "1rem"
   },
   avatar: {
-    height: "6rem",
-    width: "6rem"
+    height: "7rem",
+    width: "7rem"
   },
   user: {
     color: theme.palette.secondary.main,

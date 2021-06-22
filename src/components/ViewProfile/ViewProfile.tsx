@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 /**
  * External Imports
  */
@@ -13,14 +15,19 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 /**
- * Imports the component styles
+ * Imports components
  */
-import { useStyles } from "./ViewProfile.styles";
+import AlertModal from "../AlertModal";
 
 /**
  * Imports Hooks
  */
 import { useApiClient, useMessage, useUser } from "../../hooks";
+
+/**
+ * Imports the component styles
+ */
+import { useStyles } from "./ViewProfile.styles";
 
 /**
  * Imports the User interface
@@ -46,6 +53,11 @@ const ViewProfile: React.FC<ViewProfileProps> = (props) => {
   const classes = useStyles();
 
   /**
+   * Handles the modal state
+   */
+  const [open, setOpen] = useState(false);
+
+  /**
    * Init the auth hook
    */
   const { updateUser, user: authUser } = useUser();
@@ -61,19 +73,28 @@ const ViewProfile: React.FC<ViewProfileProps> = (props) => {
   const { dispatchMessage } = useMessage();
 
   /**
+   * Handles closing the modal
+   */
+  const handleClose = () => setOpen(false);
+
+  /**
+   * Handles opening the modal
+   */
+  const handleOpen = () => setOpen(true);
+
+  /**
    * Handles reseting the score
    */
   const resetScore = async () => {
-    if (window.confirm("Are you sure? This cannot be undone.")) {
-      const { data } = await apiClient.put("/api/profile/score");
+    const { data } = await apiClient.put("/api/profile/score");
 
-      updateUser({ ...authUser, score: data.score });
-      dispatchMessage({
-        message: data.msg,
-        severity: "success",
-        autoClose: 3000
-      });
-    }
+    updateUser({ ...authUser, score: data.score });
+    handleClose();
+    dispatchMessage({
+      message: data.msg,
+      severity: "success",
+      autoClose: 3000
+    });
   };
 
   return (
@@ -101,13 +122,20 @@ const ViewProfile: React.FC<ViewProfileProps> = (props) => {
       <Grid justify="center" container item lg={12}>
         <Button
           variant="outlined"
-          onClick={resetScore}
+          onClick={handleOpen}
           disabled={!user.score}
           className={classes.button}
         >
           Reset Score
         </Button>
       </Grid>
+      <AlertModal
+        agree={resetScore}
+        open={open}
+        onClose={handleClose}
+        title="Reset Score"
+        content="Are you sure? This cannot be undone"
+      />
     </Paper>
   );
 };

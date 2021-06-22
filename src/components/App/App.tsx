@@ -164,13 +164,10 @@ const App: React.FC = () => {
             handleSubmit={handleSubmit}
           />
         </Grid>
-        {loading ? (
-          <LoadingBar />
-        ) : (
-          <Grid item lg={12}>
-            <FaceRecognition image={imgUrl} boxes={boxes} />
-          </Grid>
-        )}
+        {loading && <LoadingBar />}
+        <Grid item lg={12}>
+          <FaceRecognition image={imgUrl} boxes={boxes} />
+        </Grid>
       </Grid>
     </Paper>
   );

@@ -8,6 +8,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import Avatar from "@material-ui/core/Avatar";
 
 /**
  * Imports Hooks
@@ -191,6 +192,9 @@ const EditProfile: React.FC<EditProfileProps> = (props) => {
         </Typography>
       </Grid>
       <form onSubmit={handleSubmit}>
+        <Grid container item lg={12} justify="center" alignContent="center">
+          <Avatar src={avatar} className={classes.avatar} />
+        </Grid>
         <Grid container item lg={12} justify="center">
           <TextField
             variant="outlined"

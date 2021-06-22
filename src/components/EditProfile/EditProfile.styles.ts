@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   title: {
     color: theme.palette.secondary.main,
-    paddingBottom: "2rem"
+    paddingBottom: "1rem"
   },
   userNameInput: {
     paddingTop: "2rem"
@@ -75,6 +75,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     "&:hover": {
       color: theme.palette.secondary.main
     }
+  },
+  avatar: {
+    height: "7rem",
+    width: "7rem",
+    marginBottom: "2rem"
   }
 }));
 
