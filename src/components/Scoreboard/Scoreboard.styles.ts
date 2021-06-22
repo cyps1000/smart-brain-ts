@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     flexDirection: "column",
     marginBottom: "1rem",
-    marginRight: "1rem",
+    marginRight: "0.55rem",
     padding: "0.5rem 0",
     [theme.breakpoints.down("xs")]: {
       marginRight: 0

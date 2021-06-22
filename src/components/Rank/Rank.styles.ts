@@ -8,16 +8,12 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
  * Styles the component
  */
 const useStyles = makeStyles((theme: Theme) => ({
-  paper: {
-    backgroundColor: theme.palette.primary.dark,
+  Rank: {
     display: "flex",
     flexDirection: "column",
-    marginBottom: "1rem",
-    padding: "0.5rem 0"
-  },
-  container: {
-    display: "flex",
-    flexDirection: "column"
+    alignItems: "center",
+    justifyContent: "center",
+    color: theme.palette.secondary.main
   }
 }));
 

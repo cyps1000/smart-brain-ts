@@ -35,7 +35,7 @@ const Scoreboard: React.FC = () => {
   /**
    * Init the user state
    */
-  const { users, loading, updateUsers, updateLoading } = useUser();
+  const { user, users, loading, updateUsers, updateLoading } = useUser();
 
   /**
    * Init the api hook
@@ -61,7 +61,7 @@ const Scoreboard: React.FC = () => {
     updateLoading(true);
     getUsers();
     // eslint-disable-next-line
-  }, []);
+  }, [user.score]);
 
   return (
     <Paper elevation={5} className={classes.paper}>
