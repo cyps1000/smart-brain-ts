@@ -73,15 +73,6 @@ export const getApiClient = (config: Config) => {
           logout && logout();
         }
 
-        if (data.msg === "Authorization denied.") {
-          dispatchMessage({
-            message: "Session expired",
-            severity: "error",
-            autoClose: 5000
-          });
-          logout && logout();
-        }
-
         return Promise.reject(error);
       }
     }
