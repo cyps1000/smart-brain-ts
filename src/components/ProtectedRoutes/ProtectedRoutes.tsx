@@ -57,9 +57,8 @@ const ProtectedRoutes: React.FC = () => {
       }
 
       updateUser(data);
+      updateAuth({ isLoggedIn: true });
     }
-
-    updateAuth({ isLoggedIn: true });
   };
 
   /**
@@ -74,7 +73,7 @@ const ProtectedRoutes: React.FC = () => {
    * Handles updating the unauthorized state
    */
   useEffect(() => {
-    if (!token) setUnauthorized(true);
+    if (!localStorage.getItem("token")) setUnauthorized(true);
   }, [token]);
 
   /**

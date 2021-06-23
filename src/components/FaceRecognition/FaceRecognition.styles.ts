@@ -17,7 +17,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   media: {
     maxWidth: "100%",
     width: "700px",
-    height: "auto"
+    height: "auto",
+    maxHeight: 466
   },
   boundingBox: {
     position: "absolute",
